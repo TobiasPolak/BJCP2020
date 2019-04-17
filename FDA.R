@@ -10,10 +10,15 @@ library(pdftools)
 library(stringr)
 # loading dataframe
 
-ApplicationsDocsType_Lookup <- read.delim("~/PhD/drugsatfda/ApplicationsDocsType_Lookup.txt")
-ApplicationDocs <- read.delim("~/PhD/drugsatfda/ApplicationDocs.txt")
-Applications <- read.delim("~/PhD/drugsatfda/Applications.txt")
-Products <- read.delim("~/PhD/drugsatfda/Products.txt")
+'%ni%' <- Negate('%in%')
+
+ApplicationsDocsType_Lookup <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/ApplicationsDocsType_Lookup.txt")
+ApplicationDocs <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/ApplicationDocs.txt")
+Applications <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/Applications.txt")
+Products <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/Products.txt")
+
+View(summary(Products))
+file.choose()
 
 #Products have an Application Number. Applications have (multiple) ApplicationDocs.
 # ApplicationsDocsType_Lookup contains the interesting applications: 
@@ -36,14 +41,17 @@ length(ApplicationDocs$ApplicationDocsID[which(ApplicationDocs$ApplicationDocsTy
 
 # Select all Applicationdocuments with these 3 documentTypes.
 drug_applications <- ApplicationDocs[which(ApplicationDocs$ApplicationDocsTypeID==2 | ApplicationDocs$ApplicationDocsTypeID==3 | ApplicationDocs$ApplicationDocsTypeID==21 ), ]
-drug_applications <- drug_applications[which(drug_applications$ApplNo==208700),]
+#drug_applications <- drug_applications[which(drug_applications$ApplNo==208700),]
+
+(Products$ApplNo[4])
 
 items <- list('compassionate', 'expanded access', 'early access', 'named-patient')
 for (term in items){
 drug_applications[,term] <- NA
 }
 
-for (i in 1:length(drug_applications$ApplicationDocsID)){
+
+for (i in 800:length(drug_applications$ApplicationDocsID)){
   drug_url <- as.matrix(drug_applications$ApplicationDocsURL[i])
   
   
@@ -53,6 +61,7 @@ for (i in 1:length(drug_applications$ApplicationDocsID)){
     if (sum (grepl(word, text)) > 0){ 
       drug_applications[i,word] <- 'TRUE' 
       print('TRUE')
+      {break}
     }else{ 
       drug_applications[i, word] <- 'FALSE' 
       print("FALSE")

@@ -35,8 +35,9 @@ colnames(report)[1] <- 'Medicine Name'
 
 
 for (term in items){
-  report[,term] <- 'blank'
-  assessment[,term] <- 'blank'
+  report[,term] <- NULL
+  assessment[,term] <- NULL
+  sciecen[,term] <- NULL
 }
 
 
@@ -63,14 +64,14 @@ for (i in 1:length(drugs$`Medicine name`)){
       text <- pdf_text('destfile.txt')})
     for (word in items){
       if (sum (grepl(word, text)) > 0){
-        report[i, word] <- 'Yes'
+        report[i, word] <- TRUE
       }else{
-        report[i, word] <- 'No'
+        report[i, word] <- FALSE
       }
       unlink('destfile.txt')
     }
   } else{
-    report[i,] <- 'ERROR'
+    report[i,2:ncol(report)] <- 'ERROR'
     print(paste0("Report Error: ", drugs$`Medicine name`[i]))
   }
   
@@ -82,16 +83,16 @@ for (i in 1:length(drugs$`Medicine name`)){
       text <- pdf_text('destfile.txt')})
     for (word in items){
       if (sum (grepl(word, text)) > 0){
-        print('yes')
-        assessment[i, word] <- 'Yes'
+        print('TRUE')
+        assessment[i, word] <- TRUE
       }else{
-        print('no')
-        assessment[i, word] <- 'No'
+        print('FALSE')
+        assessment[i, word] <- FALSE
       }
       unlink('destfile.txt')
     }
   } else{
-    assessment[i,] <- 'ERROR'
+    assessment[i,2:ncol(assessment)] <- 'ERROR'
     print(paste0("Assessment Error: ", drugs$`Medicine name`[i]))
   }
   
@@ -103,14 +104,14 @@ for (i in 1:length(drugs$`Medicine name`)){
       text <- pdf_text('destfile.txt')})
     for (word in items){
       if (sum (grepl(word, text)) > 0){
-        science[i, word] <- 'Yes'
+        science[i, word] <- TRUE
       }else{
-        science[i, word] <- 'No'
+        science[i, word] <- FALSE
       }
       unlink('destfile.txt')
     }
   } else{
-    science[i,] <- 'ERROR'
+    science[i,2:ncol(science)] <- 'ERROR'
     print(paste0("Science Error: ", drugs$`Medicine name`[i]))
   }
 }
@@ -123,15 +124,7 @@ report[,1] <- drugs$`Medicine name`
 assessment[,1] <- drugs$`Medicine name`
 
 write.table(results, 'results 16apr2019.csv')
-logicalcheck <- matrix(NA,nrow=dim(results)[1], ncol = 1)
-for (i in 1:dim(results)[1]){
-  for (j in 1:dim(results)[2]){
-    if (results[i,j] == 'Yes'){
-      print(i)
-      logicalcheck[i] <- "TRUE"
-    }
-  }
-}
+
 View(logicalcheck)
 
 write.table(drugs$`Medicine name`[which(logicalcheck=='TRUE')],'drugslijst')
