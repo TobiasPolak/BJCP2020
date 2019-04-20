@@ -1,94 +1,93 @@
-# Installing and loading packages
-packages <- list('pdftools', 'RCurl', 'stringr', 'readxl')
+## 1. Installing and loading packages
+## 2. Downloading data
 
-for (package in packages){
-  install.packages(package)
-}
-library(RCurl)
-library(readxl)
-library(pdftools)
-library(stringr)
-# loading dataframe
+# 1. Installing and loading packages
+packages <- list('pdftools', 'RCurl', 'stringr', 'readxl','reshape', 'reshape2', 'pheatmap', 'dplyr', 'progress')
+lapply(packages, require, character.only = TRUE)
 
-'%ni%' <- Negate('%in%')
+# 2. Downloading data and 
+temp <- tempfile() # initialize temp
 
-ApplicationsDocsType_Lookup <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/ApplicationsDocsType_Lookup.txt")
-ApplicationDocs <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/ApplicationDocs.txt")
-Applications <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/Applications.txt")
-Products <- read.delim("/Users/tobiaspolak/Downloads/drugsatfda/Products.txt")
+download.file("https://www.fda.gov/downloads/Drugs/InformationOnDrugs/UCM527389.zip",temp) #download from drugs@FDA
 
-View(summary(Products))
-file.choose()
+ApplicationsDocsType_Lookup <- read.delim(unz(temp, 'ApplicationsDocsType_Lookup.txt'))
+ApplicationDocs <- read.delim(unz(temp,'ApplicationDocs.txt'))
+Applications <- read.delim(unz(temp,"Applications.txt"))
+Products <- read.delim(unz(temp,"Products.txt"))
+MarketingStatus <- read.delim(unz(temp, "MarketingStatus.txt"))
+MarketingStatus_Lookup <- read.delim(unz(temp, "MarketingStatus_Lookup.txt"))
+
+unlink(temp)
+
 
 #Products have an Application Number. Applications have (multiple) ApplicationDocs.
 # ApplicationsDocsType_Lookup contains the interesting applications: 
 # 2 - Label, 3 - Review, 21 - Summary Review
 
-summary(Applications$ApplType)
-summary(ApplicationDocs$ApplicationDocsTypeID)
+cat('number of all unique drug names: ', length(unique(Products$DrugName)), 
+    '\nnumber of all unique application documents: ', length(ApplicationDocs$ApplicationDocsID),
+    '\nnumber of all labels: ', sum(ApplicationDocs$ApplicationDocsTypeID==2),
+    '\nnumber of all reviews: ', sum(ApplicationDocs$ApplicationDocsTypeID==3),
+    '\nnumber of all summaries: ', sum(ApplicationDocs$ApplicationDocsTypeID==21))
 
-length(unique(Products$DrugName))
-# 7244 unique drugs
-
-length(ApplicationDocs$ApplicationDocsID)
-# 56459 application documents
-
-length(ApplicationDocs$ApplicationDocsID[which(ApplicationDocs$ApplicationDocsTypeID==2 | ApplicationDocs$ApplicationDocsTypeID==3 | ApplicationDocs$ApplicationDocsTypeID==21 )])
 # Applicationdoctype = 2 => 19611 documents
 # Applicationdoctype = 3 => 6413 documents
 # Applicationdoctype = 21 => 744 documents
-# Total of 26768 documents
+# numer  7244 unique drugse
 
-# Select all Applicationdocuments with these 3 documentTypes.
 drug_applications <- ApplicationDocs[which(ApplicationDocs$ApplicationDocsTypeID==2 | ApplicationDocs$ApplicationDocsTypeID==3 | ApplicationDocs$ApplicationDocsTypeID==21 ), ]
-#drug_applications <- drug_applications[which(drug_applications$ApplNo==208700),]
+#drug_applications <- drug_applications[which(drug_applications$ApplNo==208700),] <- LUTATHERA
 
-(Products$ApplNo[4])
 
-items <- list('compassionate', 'expanded access', 'early access', 'named-patient')
+# Select all Products that have are Approved
+Authorized <- MarketingStatus[MarketingStatus$MarketingStatusID ==1 | MarketingStatus$MarketingStatusID == 2,]
+Authorized_Products <- merge(Authorized, Products)
+
+# Select only ApplNo, Drug Name and Ingredient
+Authorized_Products <- Authorized_Products[,c(1,7,8)]
+
+# Aggregate by ApplNo
+prod <- aggregate(Authorized_Products,by = list(Authorized_Products$ApplNo), FUN = first)
+cat('unique Application Numbers for Authorized Products: ', length(prod$ApplNo))
+
+# Select all .pdf documents from ApplicationDocs
+ApplicationDocs_pdf <- drug_applications[grepl('.pdf', drug_applications$ApplicationDocsURL),]
+cat('Applicationdocs total ', length(ApplicationDocs$ApplicationDocsID),  'drug_applications total: ', length(drug_applications$ApplicationDocsID), 'Total PDFs :', length(ApplicationDocs_pdf$ApplicationDocsID))
+
+data[which(data$ApplNo==208700),]
+data <- merge(prod, ApplicationDocs_pdf, by = 'ApplNo')
+items <- list('compassionate use', 'expanded access', 'early access', 'named-patient', 'pre-approval access')
+
 for (term in items){
-drug_applications[,term] <- NA
+data[,term] <- NA
 }
 
+pb <- progress_bar$new(
+  format = " downloading [:bar] :percent eta: :eta",
+  total = length(data$ApplNo), clear = FALSE, width= 150)
 
-for (i in 800:length(drug_applications$ApplicationDocsID)){
-  drug_url <- as.matrix(drug_applications$ApplicationDocsURL[i])
+for (i in 19137:length(data$ApplicationDocsID)){
   
-  
+  drug_url <- as.matrix(data$ApplicationDocsURL[i])
   try({download.file(drug_url, 'destfile.txt') 
     text <- pdf_text('destfile.txt')}) 
   for (word in items){ 
     if (sum (grepl(word, text)) > 0){ 
-      drug_applications[i,word] <- 'TRUE' 
-      print('TRUE')
-      {break}
+      data[i,word] <- TRUE 
     }else{ 
-      drug_applications[i, word] <- 'FALSE' 
-      print("FALSE")
+      data[i, word] <- FALSE
     } 
     unlink('destfile.txt') 
   } 
   print(i)
 } 
 
-  
-drug_url <- 'http://www.accessdata.fda.gov/drugsatfda_docs/label/2018/208700s000lbl.pdf'
+filename <- paste0('FDA_', Sys.time(), '.txt')
+write.table(data, filename)
 
+EA_data <- data[which(data$compassionate.use==TRUE | data$expanded.access==TRUE | data$early.access==TRUE | data$named.patient==TRUE | data$pre.approval.access == TRUE),]
+EA_drugs <- list(unique(EA_data$DrugName))
 
+filename <- paste0('FDA_drugs_', Sys.time(), '.txt')
+write.table(EA_drugs, filename)
 
-
-
-length(unique(drug_applications$ApplNo))
-# 26768 submissions regarding 4917 application numbers
-
-appli <- Applications[which(Applications$ApplNo %in% applno_docs),]
-appli <- Applicatiosn
-
-drugs <- Applications[unique(drug_applications$ApplNo),]
-length(unique(drugs$ApplNo))
-length(unique(Applications$ApplNo))
-
-product_application <- merge(appli, Products, by = 'ApplNo')
-product_application_docs <- merge(product_application, ApplicationDocs, by = 'ApplNo')
-
-dim(merge(appli, Products, all= FALSE))

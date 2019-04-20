@@ -1,20 +1,18 @@
-install.packages('pdftools', 'readxl', 'Rcurl')
-install.packages('RCurl')
-install.packages('stringr')
-library(readxl)
-library(pdftools)
-library(RCurl)
-library(stringr)
+
+# 1. Installing and loading packages
+packages <- list('pdftools', 'RCurl', 'stringr', 'readxl','reshape', 'reshape2', 'stringr', 'dplyr', 'progress')
+lapply(packages, require, character.only = TRUE)
+
 
 # LOADING THE DATA
 drugs <- read_excel("/Users/tobiaspolak/Downloads/Medicines_output_european_public_assessment_reports.xlsx")
-
+data <- drugs
 #removing all veterinary drugs and unauthorized drugs
 drugs <- data[data$Category == 'Human',]
 drugs <- drugs[drugs$`Authorisation status` == 'Authorised',]
 
 #define the search terms
-items <- list('compassionate', 'expanded access', 'early access', 'named-patient')
+items <- list('compassionate use', 'expanded access', 'early access', 'named-patient', 'pre-approval access')
 
 reportMatrix <- matrix(, nrow = nrow(drugs), ncol = length(items))
 assessmentMatrix <- matrix(, nrow = nrow(drugs), ncol = length(items))
@@ -37,7 +35,7 @@ colnames(report)[1] <- 'Medicine Name'
 for (term in items){
   report[,term] <- NULL
   assessment[,term] <- NULL
-  sciecen[,term] <- NULL
+  science[,term] <- NULL
 }
 
 
@@ -83,10 +81,8 @@ for (i in 1:length(drugs$`Medicine name`)){
       text <- pdf_text('destfile.txt')})
     for (word in items){
       if (sum (grepl(word, text)) > 0){
-        print('TRUE')
         assessment[i, word] <- TRUE
       }else{
-        print('FALSE')
         assessment[i, word] <- FALSE
       }
       unlink('destfile.txt')
