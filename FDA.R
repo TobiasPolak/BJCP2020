@@ -2,8 +2,9 @@
 ## 2. Downloading data
 
 # 1. Installing and loading packages
-packages <- list('pdftools', 'RCurl', 'stringr', 'readxl','reshape', 'reshape2', 'pheatmap', 'dplyr', 'progress')
+packages <- list('pdftools', 'RCurl', 'stringr', 'readxl','reshape', 'reshape2', 'pheatmap', 'dplyr', 'progress','tictoc', 'tesseract')
 lapply(packages, require, character.only = TRUE)
+eng <- tesseract("eng")
 
 # 2. Downloading data and 
 temp <- tempfile() # initialize temp
@@ -54,40 +55,63 @@ cat('unique Application Numbers for Authorized Products: ', length(prod$ApplNo))
 ApplicationDocs_pdf <- drug_applications[grepl('.pdf', drug_applications$ApplicationDocsURL),]
 cat('Applicationdocs total ', length(ApplicationDocs$ApplicationDocsID),  'drug_applications total: ', length(drug_applications$ApplicationDocsID), 'Total PDFs :', length(ApplicationDocs_pdf$ApplicationDocsID))
 
-data[which(data$ApplNo==208700),]
+#data[which(data$ApplNo==208700),]
 data <- merge(prod, ApplicationDocs_pdf, by = 'ApplNo')
 items <- list('compassionate use', 'expanded access', 'early access', 'named-patient', 'pre-approval access')
 
 for (term in items){
-data[,term] <- NA
+  data[,term] <- NA
 }
 
+data[, 'OCR'] <- NA
+data[, 'time'] <- 0
 pb <- progress_bar$new(
   format = " downloading [:bar] :percent eta: :eta",
   total = length(data$ApplNo), clear = FALSE, width= 150)
 
-for (i in 19137:length(data$ApplicationDocsID)){
+for (i in 1552:length(data$ApplicationDocsID)){
+  # Update progress bar
+  pb$tick()
+  Sys.sleep(1 / length(data$ApplNo))
   
+  # Download file
   drug_url <- as.matrix(data$ApplicationDocsURL[i])
-  try({download.file(drug_url, 'destfile.txt') 
-    text <- pdf_text('destfile.txt')}) 
+  try({download.file(drug_url, 'destfile') 
+    text <- pdf_text('destfile')})
+  if (sum(nchar(text))>50){
+    data[i,'OCR'] <- FALSE
+    text <- text
+  }
+  else{
+    try({
+    data[i, 'OCR'] <- TRUE
+    pngfile <-pdf_convert('destfile', dpi = 300, format='png')
+    text <- ocr(pngfile, engine = eng)})
+  }
   for (word in items){ 
-    if (sum (grepl(word, text)) > 0){ 
+    if (sum (grepl(word, text, ignore.case=TRUE)) > 0){ 
       data[i,word] <- TRUE 
     }else{ 
       data[i, word] <- FALSE
     } 
-    unlink('destfile.txt') 
+    unlink('destfile') 
+
   } 
   print(i)
 } 
 
-filename <- paste0('FDA_', Sys.time(), '.txt')
+
+filename <- paste0('FDA_OCR', Sys.time(), '.txt')
 write.table(data, filename)
+write.csv2(data,filename)
+FDA_data <- data[which(data$`compassionate use`==TRUE | data$`expanded access`==TRUE | data$`early access` == TRUE | data$`named-patient`==TRUE | data$`pre-approval access`== TRUE),]
 
-EA_data <- data[which(data$compassionate.use==TRUE | data$expanded.access==TRUE | data$early.access==TRUE | data$named.patient==TRUE | data$pre.approval.access == TRUE),]
-EA_drugs <- list(unique(EA_data$DrugName))
 
-filename <- paste0('FDA_drugs_', Sys.time(), '.txt')
-write.table(EA_drugs, filename)
+filename <- paste0('FDA_drugs_OCR_', Sys.time(), '.csv')
+write.table(FDA_data, filename)
+write.csv2(FDA_data, filename)
 
+FDA_list <- unique(FDA_data$DrugName)
+filename <- paste0('FDA_list_OCR', Sys.time(), '.csv')
+write.csv2(FDA_list, filename)
+FDA_data[FDA_data$DrugName=='GLEEVEC',]
