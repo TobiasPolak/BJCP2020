@@ -1,5 +1,3 @@
-
-
 install.packages('rvest')
 install.packages('stringr')
 library(dplyr)
@@ -7,13 +5,61 @@ library(rvest)
 library(stringr)
 library(xml2)
 library(rvest)
+install.packages("rvest")
 
-page <- xml2::read_html("http://www.accessdata.fda.gov/drugsatfda_docs/nda/2014/204734Orig1s000TOC.cfm")
+install.packages('XML')
+library(XML)
 
-page %>%
-  html_nodes("a") %>%       # find all links
-  html_attr("href") %>%     # get the url
-  str_subset("MedR")        # get all the medical reviews (MedR)
+pdf_url_matrix <- matrix(c("hoi", "hoi", "hoi"), nrow = 1, ncol = 3)
+
+for (i in 1:nrow(data)){ 
+  url <- as.matrix(data$ApplicationDocsURL[i])
+  
+  tryCatch(page <- xml2::read_html(url), error = function(e){'empty page'})
+  if (page == 'empty page'){
+    next
+  }
+  possible_pdfs <- html_nodes(page, xpath = './/a[text()="Medical Review(s)"]')
+  if (length(possible_pdfs) == 0 ) {
+    possible_pdfs = html_nodes(page, xpath = '..//li[contains(.,"Medical Review(s)")]/ul/li/a[contains(.,"Part")]') 
+    if (length(possible_pdfs) == 0 ) {
+      possible_pdfs = html_nodes(page, xpath = './/a[text()="Multi-Discipline Review/Summary, Clinical, Non-Clinical"]')
+      if (length(possible_pdfs) == 0) {
+        possible_pdfs = html_nodes(page, xpath = '..//li[contains(.,"Multi-Discipline Review/Summary, Clinical, Non-Clinical")]/ul/li/a[contains(.,"Part")]') 
+        if (length(possible_pdfs) == 0 ) {
+          possible_pdfs = html_nodes(page, xpath = './/a[text()="Summary Review"]')
+          if (length(possible_pdfs) == 0) {
+            possible_pdfs = html_nodes(page, xpath = '..//li[contains(.,"Summary Review")]/ul/li/a[contains(.,"Part")]') 
+          }
+        }
+      }
+    }
+  }
+  
+  pdfs_url_link <- c()
+  if (length(possible_pdfs) == 0) {
+    pdf_url_matrix <- rbind(pdf_url_matrix, c(data$ApplNo[i], as.matrix(data$DrugName[i]), "No Medical/Summary/Multi-disciplinary documents found"))
+  } else {
+    pdf_matrix <- matrix(, nrow <- length(possible_pdfs), ncol = 2)
+    
+    pdf_link_expr <- regexpr("\\/[^\\/]*$", url )
+    
+    # LOOP through the links we found
+    for (doc_element in possible_pdfs) {
+      # Generate the url for medical/bla/bla
+      pdfs_url_link <- c( paste(substring(url, 0, pdf_link_expr),html_attr(doc_element, "href"), sep = "/"))
+      pdf_url_matrix <- rbind(pdf_url_matrix, c(data$ApplNo[i], as.matrix(data$DrugName[i]),pdfs_url_link))
+    }
+  }
+  print(i/nrow(data) * 100) 
+}
+
+
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
+#########################################################################################################
 
 
 # 1. Installing and loading packages
@@ -59,41 +105,9 @@ Authorized_Products <- Authorized_Products[,c(1,7,8)]
 prod <- aggregate(Authorized_Products,by = list(Authorized_Products$ApplNo), FUN = last)
 cat('unique Application Numbers for Authorized Products: ', length(prod$ApplNo))
 
-# Select all .cfm documents from ApplicationDocs
-ApplicationCFM <- drug_applications[grepl('.cfm', drug_applications$ApplicationDocsURL),]
 
 # Select all .cfm documents from ApplicationDocs
-ApplicationCFM <- drug_applications[grepl('.cfm', drug_applications$ApplicationDocsURL),]
+ApplicationCFM <- drug_applications[grepl('*.cfm$', drug_applications$ApplicationDocsURL),]
 cat('Applicationdocs total ', length(ApplicationDocs$ApplicationDocsID),  'drug_applications total: ', length(drug_applications$ApplicationDocsID), 'Total PDFs :', length(ApplicationDocs_pdf$ApplicationDocsID))
 
-#data[which(data$ApplNo==208700),]
-data <- merge(prod, ApplicationCFM, by = 'ApplNo')
-orig <- data[which(data$SubmissionType=="ORIG      "),]
-
-for (j in 1:2){
- url <- orig$ApplicationDocsURL[j] 
- page <- xml2::read_html(as.matrix(url))
-
- page_links <- html_nodes(page, 'a')
- page_attrs <- html_attr(page_links, "href")
- medical <- page_attrs[grepl('med', page_attrs, ignore.case=TRUE)]
- pdf <- str_subset(medical, '.pdf')
- 
- items <- page %>%
-   html_nodes("a") %>%       # find all links
-   str_subset("Med") %>%        # get all the medical reviews (MedR)
-   str_subset("pdf")
-}
-
-html_nodes("a") %>%       # find all links
-  html_attr("href") %>%     # get the url
-items <- list('compassionate use', 'expanded access', 'early access', 'named-patient', 'pre-approval access')
-
-
-page <- xml2::read_html("http://www.accessdata.fda.gov/drugsatfda_docs/nda/2014/204734Orig1s000TOC.cfm")
-
-page %>%
-  html_nodes("a") %>%       # find all links
-  html_attr("href") %>%     # get the url
-  str_subset("MedR")        # get all the medical reviews (MedR)
 
