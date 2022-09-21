@@ -1,22 +1,93 @@
-install.packages('rvest')
-install.packages('stringr')
-library(dplyr)
-library(rvest)
-library(stringr)
-library(xml2)
-library(rvest)
-install.packages("rvest")
+# 1. Installing and loading packages
 
-install.packages('XML')
-library(XML)
+rm(list=ls())
+packages <-
+  list(
+    'gsheet',
+    'urltools',
+    'RCurl',
+    'stringr',
+    'rvest',
+    'XML',
+    'readxl',
+    'stringr',
+    'dplyr',
+    'parsedate',
+    'gt',
+    'gtsummary',
+    'gridExtra',
+    'ggpubr',
+    'ggforce',
+    'glue',
+    'lubridate',
+    'knitr',
+    'hrbrthemes',
+    'ggthemes',
+    'naniar',
+    'flextable',
+    'ggsci'
+  )
 
-pdf_url_matrix <- matrix(c("hoi", "hoi", "hoi"), nrow = 1, ncol = 3)
 
-for (i in 1:nrow(data)){ 
-  url <- as.matrix(data$ApplicationDocsURL[i])
+lapply(packages, require, character.only = TRUE)
+theme_gtsummary_language("en", big.mark = "")
+
+`%notin%` <- Negate(`%in%`)
+
+dataFDAcfm <- as.data.frame(read_xlsx("C:\\Users\\31612\\Documents\\R\\BJCP2020\\Data\\FDA.xlsx", sheet=2))
+dataFDAcfm$year <- year(dataFDAcfm$ApplicationDocsDate)
+dataFDAcfm  <- dataFDAcfm[which(dataFDAcfm$year > 2018), ]
+dataFDAcfm <- dataFDAcfm[grepl('.cfm', dataFDAcfm$ApplicationDocsURL),]
+
+pdf_url_matrix <- matrix(nrow = 1, ncol = 3, data = 0)
+
+for (i in 1:nrow(dataFDAcfm)){ 
+  print(i)
   
-  tryCatch(page <- xml2::read_html(url), error = function(e){'empty page'})
-  if (page == 'empty page'){
+  url <- as.matrix(dataFDAcfm$ApplicationDocsURL[i])
+  f <- read_html(url)
+  web_info <- read_html(url, encoding = "UTF-8")
+  html_hrefnodes <- web_info %>% html_nodes('a') %>% html_attr('href')
+  web_info %>% html_attrs('style')
+  web_pdfs <- html_hrefnodes[grepl('.pdf', html_hrefnodes)] 
+
+  Medicine <- html_nodes(web_info, xpath= '/html/body/div[2]/div/main/article/header/section/div/h1') %>% html_text()
+  #Two sections
+  
+  #First Section "FDA  Approval Letter and Labeling"
+  temptitle <- html_nodes(web_info, xpath= '//*[@id="main-content"]/div/div[3]/div[1]/div')  %>% html_nodes('strong') %>% html_text()
+  temppdfs <- html_nodes(web_info, xpath= '//*[@id="main-content"]/div/div[3]/div[1]/div') %>% html_nodes('li')  %>% html_nodes('a') %>% html_attr('href')
+  temppdftitle <-   html_nodes(web_info, xpath= '//*[@id="main-content"]/div/div[3]/div[1]/div') %>% html_nodes('li')  %>% html_text()
+  temppdf <- cbind(url = temppdfs, doctitle = temppdftitle) 
+  storage1 <- cbind(medicine = rep(Medicine, nrow(temppdf)), 
+                       section = rep(temptitle, nrow(temppdf)), 
+                       temppdf)
+  
+  #Second Section "FDA Application Review Files"
+  temptitle <- html_nodes(web_info, xpath= '//*[@id="main-content"]/div/div[3]/div[2]/div') %>% html_nodes('strong') %>% html_text()
+  temppdfs <- html_nodes(web_info, xpath= '//*[@id="main-content"]/div/div[3]/div[2]/div') %>% html_nodes('li')  %>% html_nodes('a') %>% html_attr('href')
+  temppdftitle <-   html_nodes(web_info, xpath= '//*[@id="main-content"]/div/div[3]/div[2]/div') %>% html_nodes('li')  %>% html_text()
+  temppdf <- cbind(url = temppdfs, doctitle = temppdftitle) 
+  storage2 <- cbind(medicine = rep(Medicine, nrow(temppdf)), 
+                    section = rep(temptitle, nrow(temppdf)), 
+                    temppdf)
+  finalpdf <- as.data.frame(rbind(storage1, storage2))
+  if (length(finalpdf$url) != length(web_pdfs)){
+    cat("Erorr, in iteration: ", i, ' with url: ', url)
+  }
+  
+
+  
+
+  
+  web_info %>% html_nodes('body') %>% html_attr('main-content')
+  document.querySelector("#main-content > div > div:nth-child(4) > div:nth-child(2) > div")
+  
+  /html/body/div[2]/div/main/article/div/div[3]/div[2]/div
+  
+  try <- tryCatch(page <- xml2::read_html(url, encoding = 'utf-8'), error = function(e){"empty page"})
+  if (try == 'empty page'){
+    print(try)
     next
   }
   possible_pdfs <- html_nodes(page, xpath = './/a[text()="Medical Review(s)"]')
@@ -38,7 +109,7 @@ for (i in 1:nrow(data)){
   
   pdfs_url_link <- c()
   if (length(possible_pdfs) == 0) {
-    pdf_url_matrix <- rbind(pdf_url_matrix, c(data$ApplNo[i], as.matrix(data$DrugName[i]), "No Medical/Summary/Multi-disciplinary documents found"))
+    pdf_url_matrix <- rbind(pdf_url_matrix, c(dataFDAcfm$ApplNo[i], as.matrix(dataFDAcfm$DrugName[i]), "No Medical/Summary/Multi-disciplinary documents found"))
   } else {
     pdf_matrix <- matrix(, nrow <- length(possible_pdfs), ncol = 2)
     
@@ -48,10 +119,10 @@ for (i in 1:nrow(data)){
     for (doc_element in possible_pdfs) {
       # Generate the url for medical/bla/bla
       pdfs_url_link <- c( paste(substring(url, 0, pdf_link_expr),html_attr(doc_element, "href"), sep = "/"))
-      pdf_url_matrix <- rbind(pdf_url_matrix, c(data$ApplNo[i], as.matrix(data$DrugName[i]),pdfs_url_link))
+      pdf_url_matrix <- rbind(pdf_url_matrix, c(dataFDAcfm$ApplNo[i], as.matrix(dataFDAcfm$DrugName[i]),pdfs_url_link))
     }
   }
-  print(i/nrow(data) * 100) 
+  print(i/nrow(dataFDAcfm) * 100) 
 }
 
 
@@ -60,54 +131,4 @@ for (i in 1:nrow(data)){
 #########################################################################################################
 #########################################################################################################
 #########################################################################################################
-
-
-# 1. Installing and loading packages
-packages <- list('pdftools', 'RCurl', 'stringr', 'readxl','reshape', 'reshape2', 'dplyr', 'progress','tictoc', 'tesseract')
-lapply(packages, require, character.only = TRUE)
-lapply(packages, install.packages, character.only=TRUE)
-eng <- tesseract("eng")
-
-# 2. Downloading data and 
-temp <- tempfile() # initialize temp
-
-download.file("https://www.fda.gov/media/89850/download",temp) #download from drugs@FDA
-
-ApplicationsDocsType_Lookup <- read.delim(unz(temp, 'ApplicationsDocsType_Lookup.txt'))
-ApplicationDocs <- read.delim(unz(temp,'ApplicationDocs.txt'))
-Applications <- read.delim(unz(temp,"Applications.txt"))
-Products <- read.delim(unz(temp,"Products.txt"))
-MarketingStatus <- read.delim(unz(temp, "MarketingStatus.txt"))
-MarketingStatus_Lookup <- read.delim(unz(temp, "MarketingStatus_Lookup.txt"))
-
-unlink(temp)
-
-
-cat('number of all unique drug names: ', length(unique(Products$DrugName)), 
-    '\nnumber of all unique application documents: ', length(ApplicationDocs$ApplicationDocsID),
-    '\nnumber of all labels: ', sum(ApplicationDocs$ApplicationDocsTypeID==2),
-    '\nnumber of all reviews: ', sum(ApplicationDocs$ApplicationDocsTypeID==3),
-    '\nnumber of all summaries: ', sum(ApplicationDocs$ApplicationDocsTypeID==21))
-
-# Applicationdoctype = 2 => 19611 documents
-# Applicationdoctype = 3 => 6413 documents
-# Applicationdoctype = 21 => 744 documents
-# numer  7244 unique drugse
-
-# Select all Products that have are Approved
-Authorized <- MarketingStatus[MarketingStatus$MarketingStatusID ==1 | MarketingStatus$MarketingStatusID == 2,]
-Authorized_Products <- merge(Authorized, Products)
-
-# Select only ApplNo, Drug Name and Ingredient
-Authorized_Products <- Authorized_Products[,c(1,7,8)]
-
-# Aggregate by ApplNo
-prod <- aggregate(Authorized_Products,by = list(Authorized_Products$ApplNo), FUN = last)
-cat('unique Application Numbers for Authorized Products: ', length(prod$ApplNo))
-
-
-# Select all .cfm documents from ApplicationDocs
-ApplicationCFM <- drug_applications[grepl('*.cfm$', drug_applications$ApplicationDocsURL),]
-cat('Applicationdocs total ', length(ApplicationDocs$ApplicationDocsID),  'drug_applications total: ', length(drug_applications$ApplicationDocsID), 'Total PDFs :', length(ApplicationDocs_pdf$ApplicationDocsID))
-
 
