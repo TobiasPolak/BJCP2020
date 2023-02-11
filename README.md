@@ -41,4 +41,7 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/BucketGIF_1%20(1)%20(1).gif)
 
+## Results
+
+Now that we have shown you our methodology, please read the paper to find out the results!
 
