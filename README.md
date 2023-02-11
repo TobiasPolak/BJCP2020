@@ -19,7 +19,7 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 - This script assumes that you have R and RStudio installed on your system.
 
 ## Authors
-- Tobias B. Polak <sup>1,2,3,4</sup>
+- Tobias B. Polak <sup>1,2,3,4,*</sup>
 - Joost van Rosmalen <sup>1,2</sup>
 - Carin A. Uyl - De Groot <sup>3</sup>
 
@@ -30,6 +30,8 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 <sup>3</sup> Erasmus School of Health Policy & Management, Erasmus University Rotterdam, Rotterdam, The Netherlands
 
 <sup>4</sup> Real-World Data Department, myTomorrows, Amsterdam, The Netherlands
+
+\affil[*]{Corresponding author: email@my-email.com}
 
 ## Grapical information
 1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. An excellent paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5).
