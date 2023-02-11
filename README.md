@@ -19,13 +19,17 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 - This script assumes that you have R and RStudio installed on your system.
 
 ## Authors
-- Tobias B. Polak <sup>1,2,3,4 </sup>
+- Tobias B. Polak <sup>1,2,3,4</sup>
 - Joost van Rosmalen <sup>1,2</sup>
 - Carin A. Uyl - De Groot <sup>3</sup>
 
 <sup>1</sup> Department of Biostatistics, Erasmus Medical Center, Rotterdam, The Netherlands
+
 <sup>2</sup> Department of Epidemiology, Erasmus Medical Center, Rotterdam, The Netherlands
+
 <sup>3</sup> Erasmus School of Health Policy & Management, Erasmus University Rotterdam, Rotterdam, The Netherlands
+
+<sup>4</sup> Real-World Data Department, myTomorrows, Amsterdam, The Netherlands
 
 ## Grapical information
 1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. An excellent paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5):.
@@ -46,6 +50,13 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/BucketGIF_1%20(1)%20(1).gif)
 
 ## Results
-
 Now that we have shown you our methodology, please read the paper to find out the results!
+
+## Acknowledgements
+We thank David Cucchi, noor Gieles, and Simon de Wijs for extensive proofreading. 
+
+## Competing Interests
+Tobias Polak is a member of the NYU Grossmann School of Medicine Ethics and Real-World Evidence (ERWE) Working Group. Tobias Polak works part-time for expanded access service provider myTomorrows, in which he holds stock and stock options (< 0.01%). He is contractually free to publish and the service provider is not involved in any of his past or ongoing research, nor in this work. Tobias Polak receives research support from the Dutch Ministry of Economic Affairs and Climate Policy (HealthHolland). Tobias Polak has received a Prins Bernhard Cultuurfonds Prijs for travel expenses to New York City. Joost van Rosmalen declares no conflict
+of interest. Carin Uyl-de Groot has received unrestricted grants from Boehringer Ingelheim, Astellas, Celgene, Sanofi, Janssen-Cilag, Bayer, mgen, Genzyme, Merck, Glycostem Therapeutics, Astra Zeneca, oche and Merck.
+
 
