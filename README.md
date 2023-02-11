@@ -49,7 +49,7 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 Now that we have shown you our methodology, please read the paper to find out the results!
 
 ## Acknowledgements
-We thank David Cucchi, noor Gieles, and Simon de Wijs for extensive proofreading. 
+We thank David Cucchi, Noor Gieles, and Simon de Wijs for extensive proofreading. 
 
 ## Competing Interests
 Tobias Polak is a member of the NYU Grossmann School of Medicine Ethics and Real-World Evidence (ERWE) Working Group. Tobias Polak works part-time for expanded access service provider myTomorrows, in which he holds stock and stock options (< 0.01%). He is contractually free to publish and the service provider is not involved in any of his past or ongoing research, nor in this work. Tobias Polak receives research support from the Dutch Ministry of Economic Affairs and Climate Policy (HealthHolland). Tobias Polak has received a Prins Bernhard Cultuurfonds Prijs for travel expenses to New York City. Joost van Rosmalen declares no conflict
