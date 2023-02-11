@@ -25,6 +25,13 @@ Please cite this work as : Polak, T. B., Rosmalen, J., and Uyl – de Groot, C. 
 - Carin A. Uyl - De Groot
 
 ## Grapical information
-Furthermore, we created some grapics to explain our paper in more detail. 
+1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. A good paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5):.
+2. We then searched through all these documents whether any of these terms appeared, only manually going through the documents with an expanded access terms. This graphic depicts our process:
+
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF1_Compressed%20(1).gif)
+
+
+
+## Please cite the work by Kimberly et al. on the terminology of compassionate use as:
+Kimberly LL, Beuttler MM, Shen M, Caplan AL, Bateman-House A. Pre-approval Access Terminology: A Cause for Confusion and a Danger to Patients. Therapeutic Innovation & Regulatory Science. 2017;51(4):494-500. doi:10.1177/2168479017696267
 
