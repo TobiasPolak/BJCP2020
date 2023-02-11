@@ -24,13 +24,13 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 - Carin A. Uyl - De Groot
 
 ## Authors
-- John Doe^1^,^2
-- Jane Smith^3
+## Authors
+- John Doe<sup>1,2</sup>
+- Jane Smith<sup>3</sup>
 
-^1 Department of Computer Science, University of XYZ
-^2 Research Institute ABC
-^3 Department of Mathematics, University of XYZ
-
+<sup>1</sup> Department of Computer Science, University of XYZ
+<sup>2</sup> Research Institute ABC
+<sup>3</sup> Department of Mathematics, University of XYZ
 
 ## Grapical information
 1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. An excellent paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5):.
