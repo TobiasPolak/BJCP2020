@@ -33,11 +33,11 @@ Please cite this work as : Polak, T. B., Rosmalen, J., and Uyl – de Groot, C. 
 3. Unfortunately, some of the documents could not be scanned directly, as they contained blurred images rather than readible text. You then run into the following issue:
 
 
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF4_Short_Compressed%20(1).gif)
 
 6. We have to peform a technique called OCR. OCR (OCR stands for "Optical Character Recognition"). It is a technology used to convert scanned images of text into editable, searchable and machine-readable text, according to CHATGPT). Therefore, you first have to run the OCR and subsequently search for expanded access terms. The code to run this is also available in the folders. This process would look as follows:
 
-![]
-
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF5.1_Compressed%20(1).gif)
 
 ## Please cite the work by Kimberly et al. on the terminology of compassionate use as:
 Kimberly LL, Beuttler MM, Shen M, Caplan AL, Bateman-House A. Pre-approval Access Terminology: A Cause for Confusion and a Danger to Patients. Therapeutic Innovation & Regulatory Science. 2017;51(4):494-500. doi:10.1177/2168479017696267
