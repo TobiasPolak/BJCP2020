@@ -3,6 +3,9 @@ This repository contains the source code and data for the paper "Expanded Access
 
 This repository contains two folders, one for analyzing the EMA an one for analyzing the FDA. The original datasources from the EMA and (in particular the FDA) can be challenging to unravel. Therefore, both subfolders contain additional code checks. Some of the documents contain pictures and stamps and cannot be analyzed directly. To that end, there is code to use OCR. Therefore, you first have to run the OCR and subsequently search for expanded access terms. 
 
+## Citation
+Please cite this work as: Polak, T. B., van Rosmalen, J., and Uyl – de Groot, C. A. (2020a). Expanded Access as a source of real‐world data: An overview of FDA and EMA approvals. Br. J. Clin. Pharmacol. 86, 1819–1826. doi:10.1111/bcp.14284.
+
 # European Medicines Agency (EMA) Analysis
 EMA data can be obtained via: https://www.ema.europa.eu/en/medicines/download-medicine-data.
 Use EMA.R to run the analysis on the EMA dataset.
@@ -21,7 +24,7 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 - Carin A. Uyl - De Groot
 
 ## Grapical information
-1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. A good paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5):.
+1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. An excellent paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5):.
 2. We then searched through all these documents whether any of these terms appeared, only manually going through the documents with an expanded access terms. This graphic depicts our process:
 
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF1_Compressed%20(1).gif)
@@ -38,6 +41,4 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/BucketGIF_1%20(1)%20(1).gif)
 
-## Citation
-Please cite this work as : Polak, T. B., van Rosmalen, J., and Uyl – de Groot, C. A. (2020a). Expanded Access as a source of real‐world data: An overview of FDA and EMA approvals. Br. J. Clin. Pharmacol. 86, 1819–1826. doi:10.1111/bcp.14284.
 
