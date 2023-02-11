@@ -26,5 +26,5 @@ Please cite this work as : Polak, T. B., Rosmalen, J., and Uyl – de Groot, C. 
 
 ## Grapical information
 Furthermore, we created some grapics to explain our paper in more detail. 
-
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF1_Compressed%20(1).gif)
 
