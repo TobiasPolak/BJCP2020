@@ -1,4 +1,4 @@
-# Overview of FDA and EMA Approvals Using Real-World Data from Expanded Access Programs
+# Expanded Access as a source of real-world data: An overview of FDA and EMA approvals
 This repository contains the source code and data for the paper "Expanded Access as a source of real-world data: An overview of FDA and EMA approvals" that was published in the British Journal of Clinical Pharmacology. The link to the paper can be found [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7444779/). 
 
 This repository contains two folders, one for analyzing the EMA an one for analyzing the FDA. The original datasources from the EMA and (in particular the FDA) can be challenging to unravel. Therefore, both subfolders contain additional code checks. Some of the documents contain pictures and stamps and cannot be analyzed directly. To that end, there is code to use OCR. Therefore, you first have to run the OCR and subsequently search for expanded access terms. 
