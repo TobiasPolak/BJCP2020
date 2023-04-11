@@ -35,6 +35,7 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 
 ## Video
 We created a short YouTube video to show the results. 
+
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/T9Qn5QZVe4o/3.jpg)](http://www.youtube.com/watch?v=T9Qn5QZVe4o "BJCP 2020")
 
 ## Grapical information
