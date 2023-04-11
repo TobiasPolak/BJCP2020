@@ -33,11 +33,9 @@ Running the FDA.R analysis includes an OCR step for older documents (see code). 
 
 <sup>*</sup> {Corresponding author: t.polak@erasmusmc.nl}
 
-##
+## Video
 We created a short YouTube video to show the results. 
-
 [![IMAGE ALT TEXT](http://img.youtube.com/vi/T9Qn5QZVe4o/3.jpg)](http://www.youtube.com/watch?v=T9Qn5QZVe4o "BJCP 2020")
-
 
 ## Grapical information
 1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. An excellent paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5).
