@@ -45,7 +45,7 @@ We created a YouTube video to explain our research.
 3. Now, we only had to look through the documents that contain an expanded access term:
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_2_Loop.gif)
 4. Unfortunately, some of the documents could not be scanned directly, as they contained blurred images rather than readible text. You then run into the following issue:
-![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_4_OCR.gif.gif)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_4_OCR.gif)
 5. We have to peform a technique called OCR. OCR (OCR stands for "Optical Character Recognition"). It is a technology used to convert scanned images of text into editable, searchable and machine-readable text, according to CHATGPT). Therefore, you first have to run the OCR and subsequently search for expanded access terms. The code to run this is also available in the folders. This process would look as follows:
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_5_Text.gif)
 5. We could now finally divide our work into expanded access use for (i) not-efficacy data (e.g. safety, trivial) or (ii) efficacy. We further divided efficacy into (i) supportive and (ii) pivotal, based on the sections provided in the assessment reports by the regulatory agencies. 
