@@ -41,7 +41,7 @@ We created a YouTube video to explain our research.
 ## Grapical information
 1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. An excellent paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5).
 2. We then searched through all these documents whether any of these terms appeared, only manually going through the documents with an expanded access terms. This graphic depicts our process:
-![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF1_Compressed%20(1).gif)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF1_Compressed%20(1).gif)
 3. Now, we only had to look through the documents that contain an expanded access term:
 ![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF2_Loop_Compressed%20(1).gif)
 4. Unfortunately, some of the documents could not be scanned directly, as they contained blurred images rather than readible text. You then run into the following issue:
