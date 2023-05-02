@@ -41,16 +41,16 @@ We created a YouTube video to explain our research.
 ## Grapical information
 1. First, we downloaded all publicly available information from the FDA and EMA websites above. We then searched for any terms related to expanded access, such as compassionate use, expanded access, early access, pre-approval access, named patient, managed access. single-patient access, single-patient IND, etc. An excellent paper on all the confusing terminology can be found [here](https://journals.sagepub.com/doi/10.1177/2168479017696267?icid=int.sj-abstract.similar-articles.5).
 2. We then searched through all these documents whether any of these terms appeared, only manually going through the documents with an expanded access terms. This graphic depicts our process:
-![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF1_Compressed%20(1).gif)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_1_Download.gif)
 3. Now, we only had to look through the documents that contain an expanded access term:
-![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF2_Loop_Compressed%20(1).gif)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_2_Loop.gif)
 4. Unfortunately, some of the documents could not be scanned directly, as they contained blurred images rather than readible text. You then run into the following issue:
-![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF4_Short_Compressed%20(1).gif)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_4_OCR.gif.gif)
 5. We have to peform a technique called OCR. OCR (OCR stands for "Optical Character Recognition"). It is a technology used to convert scanned images of text into editable, searchable and machine-readable text, according to CHATGPT). Therefore, you first have to run the OCR and subsequently search for expanded access terms. The code to run this is also available in the folders. This process would look as follows:
-![](https://github.com/TobiasPolak/BJCP2020/blob/master/GIF5.1_Compressed%20(1).gif)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/GIF_5_Text.gif)
 5. We could now finally divide our work into expanded access use for (i) not-efficacy data (e.g. safety, trivial) or (ii) efficacy. We further divided efficacy into (i) supportive and (ii) pivotal, based on the sections provided in the assessment reports by the regulatory agencies. 
 
-![](https://github.com/TobiasPolak/BJCP2020/blob/master/BucketGIF_1%20(1)%20(1).gif)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/BucketGIF_1%20(1)%20(1).gif)
 
 ## Results
 Now that we have shown you our methodology, please read the paper to find out the results!
