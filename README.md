@@ -54,7 +54,7 @@ We created a YouTube video to explain our research.
 
 ## Results
 Now that we have shown you our methodology, please read the paper to find out the results! We recently updated the results (not peer-reviewed) and these are depicted in the animation below:
-[](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/BarChart2.gif!)
+![](https://github.com/TobiasPolak/BJCP2020/blob/master/Animations/BarChart2.gif)
 
 ## Acknowledgements
 We thank David Cucchi, Noor Gieles, and Simon de Wijs for extensive proofreading. 
