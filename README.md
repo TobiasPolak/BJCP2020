@@ -8,7 +8,7 @@ Please cite this work as: Polak, T. B., van Rosmalen, J., and Uyl – de Groot, 
 
 # European Medicines Agency (EMA) Analysis
 EMA data can be obtained via: https://www.ema.europa.eu/en/medicines/download-medicine-data.
-Use EMA.R to run the analysis on the EMA dataset.
+Do *not* use EMA.R to run the analysis on the EMA dataset.
 
 # Food and Drug Administration (FDA) Analysis.
 First run the Scrapy.R code 
